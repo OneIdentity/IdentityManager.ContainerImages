@@ -4,9 +4,8 @@
 
 This repository provides the README files for the Docker container images of Identity Manager released by One Identity.
 
-* [One Identity Manager Installer image (oneidentity/oneim-install)](installer)
-* [One Identity Manager Database Agent (oneidentity/oneim-dbagent)](dbagent)
-* [One Identity Manager Service (oneidentity/oneim-job)](jobservice)
-* [One Identity Manager Application Server (oneidentity/oneim-appserver)](appserver)
 * [One Identity Manager API Server (oneidentity/oneim-api)](apiserver)
-
+* [One Identity Manager Application Server (oneidentity/oneim-appserver)](appserver)
+* [One Identity Manager Database Agent (oneidentity/oneim-dbagent)](dbagent)
+* [One Identity Manager installer image (oneidentity/oneim-install)](installer)
+* [One Identity Manager Service (oneidentity/oneim-job)](jobservice)
