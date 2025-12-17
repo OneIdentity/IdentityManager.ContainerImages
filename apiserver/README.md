@@ -448,10 +448,7 @@ Linux based API servers log directly to standard output. These logs can be fetch
 
 ### Ports
 
-The API Server is exposing the following ports:
-
-* **Windows:** `80`
-* **Linux:** `80`
+The API Server is exposing port **8080**.
 
 ## Samples
 
