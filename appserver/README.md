@@ -369,7 +369,7 @@ Linux based application servers log directly to standard output. These logs can 
 
 ### Ports
 
-The application server is exposing port **80**.
+The Application Server is exposing port **8080**.
 
 ## Samples
 
