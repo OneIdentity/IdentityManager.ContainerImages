@@ -14,29 +14,19 @@ All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
 ### Supported Windows Server 2022 amd64 tags
 
-* `latest`, `10.0`, `9.3`, `9.2`, `9.1`, `9.0`, `windows-amd64-10.0-windowsservercore-ltsc2022`, `windows-amd64-9.3-windowsservercore-ltsc2022`, `windows-amd64-9.2-windowsservercore-ltsc2022`, `windows-amd64-9.1-windowsservercore-ltsc2022`, `windows-amd64-9.0-windowsservercore-ltsc2022`, `windows-amd64-latest-windowsservercore-ltsc2022`
-
-### Supported Windows Server 2019 amd64 tags
-
-* `9.3`, `9.2`, `9.1`, `9.0`, `windows-amd64-9.3-windowsservercore-ltsc2019`, `windows-amd64-9.2-windowsservercore-ltsc2019`, `windows-amd64-9.1-windowsservercore-ltsc2019`, `windows-amd64-9.0-windowsservercore-ltsc2019`
-
-### Supported Windows Server 2016 amd64 tags
-
-* `9.2`, `9.1`, `9.0`, `windows-amd64-9.2-windowsservercore-ltsc2016`, `windows-amd64-9.1-windowsservercore-ltsc2016`, `windows-amd64-9.0-windowsservercore-ltsc2016`
+* `latest`, `10.0`, `windows-amd64-10.0-windowsservercore-ltsc2022`, `windows-amd64-latest-windowsservercore-ltsc2022`
 
 ### Supported Linux tags
 
-* `latest`, `9.3`, `9.2`, `9.1`, `9.0`, `linux-amd64-9.3`, `linux-amd64-9.2`, `linux-amd64-9.1`, `linux-amd64-9.0`, `linux-amd64-latest`
+* `latest`, `10.0`, `linux-amd64-10.0`, `linux-amd64-latest`
 
 ## How to use this image
 
 > **Disclaimer regarding Linux images**
 >
 > Please note that not all functions on Identity Manager are supported in Linux containers.
-> Identity Manager < 9.3 runs on Mono and not all underlying components are available with Mono.
-> For example report generation may fail running in Linux containers.
 > 
-> Identity Manager >= 9.3 runs on .NET and not all underlying components are compatible with .NET on Linux.
+> Identity Manager 10.0 runs on .NET 10 and not all underlying components are compatible with .NET 10 on Linux.
 
 > **Remark:** On Linux the application server image does not update automatically. You have to
 > start a new instance when entries of `QBMFileRevision` change by updates or migrations.
