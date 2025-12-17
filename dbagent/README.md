@@ -8,25 +8,17 @@ All images tagged with `windows-amd64` are compatible with Windows Server hosts.
 
 All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
-### Supported Windows Server 2025 amd64 tags
-
-* `latest`, `10.0`, `windows-amd64-10.0-windowsservercore-ltsc2025`, `windows-amd64-latest-windowsservercore-ltsc2025`
-
 ### Supported Windows Server 2022 amd64 tags
 
-* `latest`, `10.0`, `9.3`, `9.2`, `9.1`, `9.0`, `windows-amd64-10.0-windowsservercore-ltsc2022`, `windows-amd64-9.3-windowsservercore-ltsc2022`, `windows-amd64-9.2-windowsservercore-ltsc2022`, `windows-amd64-9.1-windowsservercore-ltsc2022`, `windows-amd64-9.0-windowsservercore-ltsc2022`, `windows-amd64-latest-windowsservercore-ltsc2022`
+* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `9.2`, `9.1`, `9.0`, `windows-amd64-9.3-windowsservercore-ltsc2019`, `windows-amd64-9.2-windowsservercore-ltsc2019`, `windows-amd64-9.1-windowsservercore-ltsc2019`, `windows-amd64-9.0-windowsservercore-ltsc2019`
-
-### Supported Windows Server 2016 amd64 tags
-
-* `9.2`, `9.1`, `9.0`, `windows-amd64-9.2-windowsservercore-ltsc2016`, `windows-amd64-9.1-windowsservercore-ltsc2016`, `windows-amd64-9.0-windowsservercore-ltsc2016`
+* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `latest`, `9.3`,  `9.2`, `9.1`, `9.0`, `linux-amd64-9.3`, `linux-amd64-9.2`, `linux-amd64-9.1`, `linux-amd64-9.0`, `linux-amd64-latest`
+* `9.3`, `linux-amd64-9.3`
 
 ## How to use this image
 

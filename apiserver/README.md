@@ -8,35 +8,26 @@ All images tagged with `windows-amd64` are compatible with Windows Server hosts.
 
 All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
-### Supported Windows Server 2025 amd64 tags
-
-* `latest`, `10.0`, `windows-amd64-10.0-windowsservercore-ltsc2025`, `windows-amd64-latest-windowsservercore-ltsc2025`
-
 ### Supported Windows Server 2022 amd64 tags
 
-* `latest`, `10.0`, `9.3`, `9.2`, `9.1`, `9.0`, `windows-amd64-10.0-windowsservercore-ltsc2022`, `windows-amd64-9.3-windowsservercore-ltsc2022`, `windows-amd64-9.2-windowsservercore-ltsc2022`, `windows-amd64-9.1-windowsservercore-ltsc2022`, `windows-amd64-9.0-windowsservercore-ltsc2022`, `windows-amd64-latest-windowsservercore-ltsc2022`
+* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `9.2`, `9.1`, `9.0`, `windows-amd64-9.3-windowsservercore-ltsc2019`, `windows-amd64-9.2-windowsservercore-ltsc2019`, `windows-amd64-9.1-windowsservercore-ltsc2019`, `windows-amd64-9.0-windowsservercore-ltsc2019`
-
-### Supported Windows Server 2016 amd64 tags
-
-* `9.2`, `9.1`, `9.0`, `windows-amd64-9.2-windowsservercore-ltsc2016`, `windows-amd64-9.1-windowsservercore-ltsc2016`, `windows-amd64-9.0-windowsservercore-ltsc2016`
+* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `latest`, `9.3`, `9.2`, `9.1`, `9.0`, `linux-amd64-9.3`, `linux-amd64-9.2`, `linux-amd64-9.1`, `linux-amd64-9.0`, `linux-amd64-latest`
+* `9.3`, `linux-amd64-9.3`
 
 ## How to use this image
 
 > **Disclaimer regarding Linux images**
 >
 > Please note that not all functions on Identity Manager are supported in Linux containers.
-> Identity Manager < 9.3 runs on Mono and not all underlying components are available with Mono.
-> For example report generation may fail running in Linux containers.
 > 
-> Identity Manager >= 9.3 runs on .NET and not all underlying components are compatible with .NET on Linux.
+> Identity Manager 9.3 runs on .NET 8 and not all underlying components are compatible with .NET 8 on Linux.
+
 
 > **Remark:** On Linux the API server image does not update automatically. You have to
 > start a new instance when entries of `QBMFileRevision` change by updates or migrations.
@@ -105,8 +96,6 @@ The `Web.config` file configures all settings of the API server. The container p
 | `#TRUSTEDSOURCEKEY#`     | `C:\ProgramData\Docker\secrets\TRUSTEDSOURCEKEY`     | `TRUSTEDSOURCEKEY`      |                                                                               |
 | `#REGISTRATIONUSER#`     | `C:\ProgramData\Docker\secrets\REGISTRATIONUSER`     | `REGISTRATIONUSER`      |                                                                               |
 | `#ONELOGINAPI#`          | `C:\ProgramData\Docker\secrets\ONELOGINAPI`          | `ONELOGINAPI`           |                                                                               |
-| `#OPENAI_ENDPOINT#`      | `C:\ProgramData\Docker\secrets\OPENAI_ENDPOINT`      | `OPENAI_ENDPOINT`       | OpenAI endpoint URL used by the "OpenAI" connection string                    |
-| `#OPENAI_API_KEY#`       | `C:\ProgramData\Docker\secrets\OPENAI_API_KEY`       | `OPENAI_API_KEY`        | OpenAI API key used by the "OpenAI" connection string                         |
 | `#SUPPORTREADSCALEOUT#`  | `C:\ProgramData\Docker\secrets\SUPPORTREADSCALEOUT`  | `SUPPORTREADSCALEOUT`   |                                                                               |
 
    The secret value takes precedence over the environment variable.
@@ -156,8 +145,6 @@ The `Web.config` file configures all settings of the API server. The container p
 | `#TRUSTEDSOURCEKEY#`     | `/run/secrets/TRUSTEDSOURCEKEY`     | `TRUSTEDSOURCEKEY`     |                                                                               |
 | `#REGISTRATIONUSER#`     | `/run/secrets/REGISTRATIONUSER`     | `REGISTRATIONUSER`     |                                                                               |
 | `#ONELOGINAPI#`          | `/run/secrets/ONELOGINAPI`          | `ONELOGINAPI`          |                                                                               |
-| `#OPENAI_ENDPOINT#`      | `/run/secrets/OPENAI_ENDPOINT`      | `OPENAI_ENDPOINT`      | OpenAI endpoint URL used by the "OpenAI" connection string                    |
-| `#OPENAI_API_KEY#`       | `/run/secrets/OPENAI_API_KEY`       | `OPENAI_API_KEY`       | OpenAI API key used by the "OpenAI" connection string                         |
 | `#SUPPORTREADSCALEOUT#`  | `/run/secrets/SUPPORTREADSCALEOUT`  | `SUPPORTREADSCALEOUT`  |                                                                               |
 
    The secret value takes precedence over the environment variable.
@@ -268,25 +255,19 @@ Url=https://my.app.server/
 
 Can be provided in the secrets folder.
 
-#### `OPENAI_ENDPOINT`
+#### `APPSERVERCONNSTRING`
 
-URL of the OpenAI endpoint used by the application. Populates the OpenAI connection string in web.config. Example:
+Additional Application Server connection string if the main connection is using a direct Microsoft SQL Server connection. This parameter is mandatory if the parameter `DBSYSTEM` equals `MSSQL`.
 
-```text
-https://models.example.com/openai
+```connectionstring
+Url=https://my.app.server/
 ```
 
-Can be provided in the secrets folder.
-
-#### `OPENAI_API_KEY`
-
-API key for the OpenAI endpoint. Populates the OpenAI connection string in web.config.
-
-Can be provided in the secrets folder.
+This value can also be provided as a file in the secrets folder.
 
 #### `TARGETS`
 
-Comma separated list of deployment targets to install. The default target is: `Server\Web\BusinessAPIServer,Server\Web\BusinessApiServer\AppInsights,Server\Web\BusinessApiServer\EndUserApps`.
+Comma separated list of deployment targets to install. The default target is: `Server\Web\BusinessAPIServer`.
 
 #### `UPDATEUSER`
 
@@ -362,7 +343,7 @@ Can be provided in the secrets folder.
 
 Connection string to the OneLogin API. The API Server uses this connection to communicate with the OneLogin MFA API. This string must have the following format:
 
-```text
+```
 Domain=<your-domain>.onelogin.com;ClientId=<client id>;ClientSecret=<client secret>
 ```
 
@@ -371,6 +352,10 @@ Can be provided in the secrets folder.
 #### `SUPPORTREADSCALEOUT`
 
 Set to `true` if the application should use read scale-out handling of Azure Managed Instances.
+
+#### `DISABLEAUTHTOKENS`
+
+Set to `true` if the application should disable the use of authentication tokens.
 
 #### `APPINSIGHTS_KEY`
 
@@ -448,11 +433,11 @@ Linux based API servers log directly to standard output. These logs can be fetch
 
 ### Ports
 
-The API Server is exposing port **8080**.
+The API Server is exposing the port **8080**.
 
 ## Samples
 
-### Windows sample
+### Windows
 
 Run the container in the background and get parameters from entries in the secrets folder:
 
@@ -470,20 +455,18 @@ docker run -d `
 
 The secrets folder looks like:
 
-```text
+```
 secrets
 |-- APPSERVERCONNSTRING
 |-- CONNSTRING
 |-- DBSYSTEM
 |-- ONELOGINAPI
-|-- OPENAI_ENDPOINT
-|-- OPENAI_API_KEY
 |-- REGISTRATIONUSER
 |-- UPDATEUSER
 `-- UPDATEPWD
 ```
 
-### Linux sample
+### Linux
 
 Run the container in the background and get parameters from entries in the secrets folder:
 
@@ -497,20 +480,18 @@ docker run -d \
 
 The secrets folder looks like:
 
-```text
+```
 secrets/
 |-- APPSERVERCONNSTRING
 |-- CONNSTRING
 |-- DBSYSTEM
 |-- ONELOGINAPI
-|-- OPENAI_ENDPOINT
-|-- OPENAI_API_KEY
 |-- REGISTRATIONUSER
 `-- UPDATEUSER
 ```
 
 ## Further Reading
 
-You will find more information about authentication strings in One Identity Manager here [One Identity Manager - Initial Data for Authentication Modules](https://support.oneidentity.com/technical-documents/identity-manager/9.2/authorization-and-authentication-guide/26#TOPIC-2083705).
+You will find more information about authentication strings in One Identity Manager here [One Identity Manager - Initial Data for Authentication Modules](https://support.oneidentity.com/technical-documents/identity-manager/9.3/authorization-and-authentication-guide/26#TOPIC-2083705).
 
 [One Identity Manager Product Information](https://www.oneidentity.com/products/identity-manager/)
