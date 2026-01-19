@@ -414,7 +414,7 @@ This mount point should be mounted read-only.
 * **Windows:** `C:/ca-certificates`
 * **Linux:** `/run/ca-certificates`
 
-Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container (or mono) local machine trusted root certificate store during startup of the container. Alternatively, an archive called `ca-certificates.zip` can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store. This may be required when the application is performing HTTPS calls to a server that is using a certificate signed by a private PKI. Like AppServer with enforced HTTPS. The lookup path may be controlled by changing the CA_CERTIFICATE environment variable.
+Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container local machine trusted root certificate store during startup of the container. Alternatively, an archive called `ca-certificates.zip` can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store. This may be required when the application is performing HTTPS calls to a server that is using a certificate signed by a private PKI. Like AppServer with enforced HTTPS. The lookup path may be controlled by changing the CA_CERTIFICATE environment variable.
 
 This mount point should be mounted read-only.
 
@@ -501,6 +501,6 @@ secrets/
 
 ## Further Reading
 
-You will find more information about authentication strings in One Identity Manager here [One Identity Manager - Initial Data for Authentication Modules](https://support.oneidentity.com/technical-documents/identity-manager/9.2/authorization-and-authentication-guide/26#TOPIC-2083705).
+You will find more information about authentication strings in One Identity Manager here [One Identity Manager - Initial Data for Authentication Modules](https://docs.oneidentity.com/bundle/one-identity-manager_authentication_10.0/page/sources/config/authentifier/dbmdialogauthentifierinitialdata.htm).
 
 [One Identity Manager Product Information](https://www.oneidentity.com/products/identity-manager/)
