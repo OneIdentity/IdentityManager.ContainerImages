@@ -29,7 +29,7 @@ This image is not intended to be used directly but contains everything necessary
 The tool `create-web-dir` allows you to assemble One Identity Manager installation folders from a directory containing a One Identity Manager distribution or directly from an installed One Identity Manager database.
 
 * **Windows:** `C:/installer/create-web-dir.exe`
-* **Linux:** `mono /installer/create-web-dir.exe`
+* **Linux:** `dotnet /installer/create-web-dir.dll`
 
 #### Parameters
 
@@ -81,7 +81,7 @@ ENV DBSYSTEM MSSQL
 ENV TARGETS "Server\Jobserver"
 
 # Assemble the One Identity Manager installation
-RUN mono /installer/create-web-dir.exe \
+RUN dotnet /installer/create-web-dir.dll \
     --mode=standalone \
     --dest=${SRV_HOME} \
     --db-system=$DBSYSTEM \

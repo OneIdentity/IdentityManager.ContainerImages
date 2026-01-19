@@ -212,7 +212,7 @@ This mount point should be mounted read-only.
 * **Windows:** `C:/ca-certificates`
 * **Linux:** `/run/ca-certificates`
 
-Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container (or mono) local machine trusted root certificate store during startup of the container.
+Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container local machine trusted root certificate store during startup of the container.
 
 Alternatively, an archive called "ca-certificates.zip" can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store.
 
