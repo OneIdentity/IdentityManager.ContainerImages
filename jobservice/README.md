@@ -10,24 +10,23 @@ All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
 ### Supported Windows Server 2022 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `9.3`, `linux-amd64-9.3`
+* `9.2`, `linux-amd64-9.2`
 
 ## How to use this image
 
 > **Disclaimer reagrding Linux images**
 >
 > Please note that not all functions on Identity Manager are supported in Linux containers.
->
-> Identity Manager 9.3 runs on .NET 8 and not all underlying components are compatible with .NET 8 on Linux.
-> For example on-prem target synchronization may fail running in Linux containers.
+> Identity Manager runs on Mono and not all underlying components are available with Mono.
+> For example report generation and on-prem target synchronization may fail running in Linux containers.
 
 ### Environment variables
 
@@ -212,7 +211,7 @@ This mount point should be mounted read-only.
 * **Windows:** `C:/ca-certificates`
 * **Linux:** `/run/ca-certificates`
 
-Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container local machine trusted root certificate store during startup of the container.
+Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container (or mono) local machine trusted root certificate store during startup of the container.
 
 Alternatively, an archive called "ca-certificates.zip" can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store.
 

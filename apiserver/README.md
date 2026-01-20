@@ -10,27 +10,27 @@ All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
 ### Supported Windows Server 2022 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `9.3`, `linux-amd64-9.3`
+* `9.2`, `linux-amd64-9.2`
 
 ## How to use this image
 
-> **Disclaimer regarding Linux images**
+> **Disclaimer reagrding Linux images**
 >
 > Please note that not all functions on Identity Manager are supported in Linux containers.
-> 
-> Identity Manager 9.3 runs on .NET 8 and not all underlying components are compatible with .NET 8 on Linux.
-
+> Identity Manager runs on Mono and not all underlying components are available with Mono.
+> For example report generation may fail running in Linux containers.
 
 > **Remark:** On Linux the API server image does not update automatically. You have to
-> start a new instance when entries of `QBMFileRevision` change by updates or migrations.
+> start a new instance when entries of `QBMFileRevision` change by updates or
+> migrations.
 
 ### Configuration files
 
@@ -255,16 +255,6 @@ Url=https://my.app.server/
 
 Can be provided in the secrets folder.
 
-#### `APPSERVERCONNSTRING`
-
-Additional Application Server connection string if the main connection is using a direct Microsoft SQL Server connection. This parameter is mandatory if the parameter `DBSYSTEM` equals `MSSQL`.
-
-```connectionstring
-Url=https://my.app.server/
-```
-
-This value can also be provided as a file in the secrets folder.
-
 #### `TARGETS`
 
 Comma separated list of deployment targets to install. The default target is: `Server\Web\BusinessAPIServer`.
@@ -400,7 +390,7 @@ The volume mount points differ between the Windows and Linux based images. Pleas
 * **Windows:** `C:/ProgramData/Docker/secrets`
 * **Linux:** `/run/secrets`
 
-It can contain files with the name of the setting and its value as content.
+It can contain files with the name of the setting and its value as content. 
 
 This mount point should be mounted read-only.
 
@@ -409,7 +399,7 @@ This mount point should be mounted read-only.
 * **Windows:** `C:/ca-certificates`
 * **Linux:** `/run/ca-certificates`
 
-Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container local machine trusted root certificate store during startup of the container. Alternatively, an archive called `ca-certificates.zip` can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store. This may be required when the application is performing HTTPS calls to a server that is using a certificate signed by a private PKI. Like AppServer with enforced HTTPS. The lookup path may be controlled by changing the CA_CERTIFICATE environment variable.
+Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container (or mono) local machine trusted root certificate store during startup of the container. Alternatively, an archive called `ca-certificates.zip` can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store. This may be required when the application is performing HTTPS calls to a server that is using a certificate signed by a private PKI. Like AppServer with enforced HTTPS. The lookup path may be controlled by changing the CA_CERTIFICATE environment variable.
 
 This mount point should be mounted read-only.
 
@@ -433,7 +423,7 @@ Linux based API servers log directly to standard output. These logs can be fetch
 
 ### Ports
 
-The API Server is exposing the port **8080**.
+The API Server is exposing port `80`.
 
 ## Samples
 
@@ -448,7 +438,7 @@ docker run -d `
     -v $P/data/cache:C:/Cache `
     -v $P/data/search:C:/Search `
     -v $P/data/logs:C:/Logs `
-    -p 9999:8080 `
+    -p 9999:80 `
     -e BASEURL=http://localhost:9999/ `
     oneidentity/oneim-api:latest
 ```
@@ -472,7 +462,7 @@ Run the container in the background and get parameters from entries in the secre
 
 ```sh
 docker run -d \
-    -p 9999:8080 \
+    -p 80:80 \
     -v $PWD/secrets:/run/secrets:ro \
     -e BASEURL=http://localhost:9999/ \
      oneidentity/oneim-api:latest
@@ -492,6 +482,6 @@ secrets/
 
 ## Further Reading
 
-You will find more information about authentication strings in One Identity Manager here [One Identity Manager - Initial Data for Authentication Modules](https://support.oneidentity.com/technical-documents/identity-manager/9.3/authorization-and-authentication-guide/26#TOPIC-2083705).
+You will find more information about authentication strings in One Identity Manager here [One Identity Manager - Initial Data for Authentication Modules](https://support.oneidentity.com/technical-documents/identity-manager/9.2/authorization-and-authentication-guide/26#TOPIC-2083705).
 
 [One Identity Manager Product Information](https://www.oneidentity.com/products/identity-manager/)

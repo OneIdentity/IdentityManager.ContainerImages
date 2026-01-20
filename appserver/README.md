@@ -10,36 +10,37 @@ All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
 ### Supported Windows Server 2022 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `9.3`, `linux-amd64-9.3`
+* `9.2`, `linux-amd64-9.2`
 
 ## How to use this image
 
-> **Disclaimer regarding Linux images**
+> **Disclaimer reagrding Linux images**
 >
 > Please note that not all functions on Identity Manager are supported in Linux containers.
-> 
-> Identity Manager 9.3 runs on .NET 8 and not all underlying components are compatible with .NET 8 on Linux.
+> Identity Manager runs on Mono and not all underlying components are available with Mono.
+> For example report generation may fail running in Linux containers.
 
 > **Remark:** On Linux the application server image does not update automatically. You have to
-> start a new instance when entries of `QBMFileRevision` change by updates or migrations.
+> start a new instance when entries of `QBMFileRevision` change by updates or
+> migrations.
 
 ### Configuration files
 
-#### `appsettings.json`
+#### `Web.config`
 
-The `appsettings.json` file configures all settings of the application server. The container probes two locations for a `appsettings.json` file:
+The `Web.config` file configures all settings of the application server. The container probes two locations for a `Web.config` file:
 
 ##### Windows
 
-1. `C:\ProgramData\Docker\secrets\appsettings.json`: If this file is present it will be used without replacing any placeholders with environment variables. A template `appsettings.json` can be created using this call:
+1. `C:\ProgramData\Docker\secrets\Web.config`: If this file is present it will be used without replacing any placeholders with environment variables. A template `Web.config` can be created using this call:
 
     ```powershell
     $P = $PWD.Path.Replace("\", "/")
@@ -55,27 +56,22 @@ The `appsettings.json` file configures all settings of the application server. T
 
 2. The container uses it's template and replaces following values with either secret values or environment variables:
 
-| Replacement pattern      | Secret value                                         | Environment variable   |
-| ------------------------ | ---------------------------------------------------- | ---------------------- |
-| `%DB_PROVIDER%`          | `C:\ProgramData\Docker\secrets\DBSYSTEM`             | `DBSYSTEM`             |
-| `%DB_CONNECTION%`        | `C:\ProgramData\Docker\secrets\CONNSTRING`           | `CONNSTRING`           |
-| `%HDB_NAME_1%`           | `C:\ProgramData\Docker\secrets\HDBNAME1`             | `HDBNAME1`             |
-| `%HDB_CONNECTION_1%`     | `C:\ProgramData\Docker\secrets\HDBCONN1`             | `HDBCONN1`             |
-| `%HDB_NAME_2%`           | `C:\ProgramData\Docker\secrets\HDBNAME2`             | `HDBNAME2`             |
-| `%HDB_CONNECTION_2%`     | `C:\ProgramData\Docker\secrets\HDBCONN2`             | `HDBCONN2`             |
-| `%HDB_NAME_3%`           | `C:\ProgramData\Docker\secrets\HDBNAME3`             | `HDBNAME3`             |
-| `%HDB_CONNECTION_3%`     | `C:\ProgramData\Docker\secrets\HDBCONN3`             | `HDBCONN3`             |
-| `#BASEURL#`              | `C:\ProgramData\Docker\secrets\BASEURL`              | `BASEURL`              |
-| `#APPINSIGHTS_KEY#`      | `C:\ProgramData\Docker\secrets\APPINSIGHTS_KEY`      | `APPINSIGHTS_KEY`      |
-| `#APPINSIGHTS_LOGLEVEL#` | `C:\ProgramData\Docker\secrets\APPINSIGHTS_LOGLEVEL` | `APPINSIGHTS_LOGLEVEL` |
-| `#LOG_TENANT#`           | `C:\ProgramData\Docker\secrets\LOG_TENANT`           | `LOG_TENANT`           |
-| `#FILE_LOGLEVEL#`        | `C:\ProgramData\Docker\secrets\FILE_LOGLEVEL`        | `FILE_LOGLEVEL`        |
-| `#SUPPORTREADSCALEOUT#`  | `C:\ProgramData\Docker\secrets\SUPPORTREADSCALEOUT`  | `SUPPORTREADSCALEOUT`  |
-| `#DISABLE_LOGVIEWER#`    | `C:\ProgramData\Docker\secrets\ENABLE_LOGVIEWER`     | `ENABLE_LOGVIEWER`     |
-| `#DISABLE_RESTAPI#`      | `C:\ProgramData\Docker\secrets\ENABLE_RESTAPI`       | `ENABLE_RESTAPI`       |
-| `#DISABLE_APPSERVERAPI#` | `C:\ProgramData\Docker\secrets\ENABLE_APPSERVERAPI`  | `ENABLE_APPSERVERAPI`  |
-| `#DISABLE_METADATA#`     | `C:\ProgramData\Docker\secrets\ENABLE_METADATA`      | `ENABLE_METADATA`      |
-| `#DISABLE_SYNC#`         | `C:\ProgramData\Docker\secrets\ENABLE_SYNC`          | `ENABLE_SYNC`          |
+| Replacement pattern      | Secret value                                         | Environment variable    |
+|--------------------------|------------------------------------------------------|-------------------------|
+| `%DB_PROVIDER%`          | `C:\ProgramData\Docker\secrets\DBSYSTEM`             | `DBSYSTEM`              |
+| `%DB_CONNECTION%`        | `C:\ProgramData\Docker\secrets\CONNSTRING`           | `CONNSTRING`            |
+| `%HDB_NAME_1%`           | `C:\ProgramData\Docker\secrets\HDBNAME1`             | `HDBNAME1`              |
+| `%HDB_CONNECTION_1%`     | `C:\ProgramData\Docker\secrets\HDBCONN1`             | `HDBCONN1`              |
+| `%HDB_NAME_2%`           | `C:\ProgramData\Docker\secrets\HDBNAME2`             | `HDBNAME2`              |
+| `%HDB_CONNECTION_2%`     | `C:\ProgramData\Docker\secrets\HDBCONN2`             | `HDBCONN2`              |
+| `%HDB_NAME_3%`           | `C:\ProgramData\Docker\secrets\HDBNAME3`             | `HDBNAME3`              |
+| `%HDB_CONNECTION_3%`     | `C:\ProgramData\Docker\secrets\HDBCONN3`             | `HDBCONN3`              |
+| `#BASEURL#`              | `C:\ProgramData\Docker\secrets\BASEURL`              | `BASEURL`               |
+| `#APPINSIGHTS_KEY#`      | `C:\ProgramData\Docker\secrets\APPINSIGHTS_KEY`      | `APPINSIGHTS_KEY`       |
+| `#APPINSIGHTS_LOGLEVEL#` | `C:\ProgramData\Docker\secrets\APPINSIGHTS_LOGLEVEL` | `APPINSIGHTS_LOGLEVEL`  |
+| `#LOG_TENANT#`           | `C:\ProgramData\Docker\secrets\LOG_TENANT`           | `LOG_TENANT`            |
+| `#FILE_LOGLEVEL#`        | `C:\ProgramData\Docker\secrets\FILE_LOGLEVEL`        | `FILE_LOGLEVEL`         |
+| `#SUPPORTREADSCALEOUT#`  | `C:\ProgramData\Docker\secrets\SUPPORTREADSCALEOUT`  | `SUPPORTREADSCALEOUT`   |
 
 The secret value takes precedence over the environment variable.
 
@@ -90,28 +86,23 @@ The secret value takes precedence over the environment variable.
 
 2. The container uses it's template and replaces following values with either secret values or environment variables:
 
-| Replacement pattern      | Secret value                        | Environment variable   |
-| ------------------------ | ----------------------------------- | ---------------------- |
-| `%DB_PROVIDER%`          | `/run/secrets/DBSYSTEM`             | `DBSYSTEM`             |
-| `%DB_CONNECTION%`        | `/run/secrets/CONNSTRING`           | `CONNSTRING`           |
-| `%HDB_NAME_1%`           | `/run/secrets/HDBNAME1`             | `HDBNAME1`             |
-| `%HDB_CONNECTION_1%`     | `/run/secrets/HDBCONN1`             | `HDBCONN1`             |
-| `%HDB_NAME_2%`           | `/run/secrets/HDBNAME2`             | `HDBNAME2`             |
-| `%HDB_CONNECTION_2%`     | `/run/secrets/HDBCONN2`             | `HDBCONN2`             |
-| `%HDB_NAME_3%`           | `/run/secrets/HDBNAME3`             | `HDBNAME3`             |
-| `%HDB_CONNECTION_3%`     | `/run/secrets/HDBCONN3`             | `HDBCONN3`             |
-| `#BASEURL#`              | `/run/secrets/\BASEURL`             | `BASEURL`              |
-| `#APPINSIGHTS_KEY#`      | `/run/secrets/APPINSIGHTS_KEY`      | `APPINSIGHTS_KEY`      |
-| `#APPINSIGHTS_LOGLEVEL#` | `/run/secrets/APPINSIGHTS_LOGLEVEL` | `APPINSIGHTS_LOGLEVEL` |
-| `#LOG_TENANT#`           | `/run/secrets/LOG_TENANT`           | `LOG_TENANT`           |
-| `#CONSOLE_LOGLEVEL#`     | `/run/secrets/CONSOLE_LOGLEVEL`     | `CONSOLE_LOGLEVEL`     |
-| `#FILE_LOGLEVEL#`        | `/run/secrets/FILE_LOGLEVEL`        | `FILE_LOGLEVEL`        |
-| `#SUPPORTREADSCALEOUT#`  | `/run/secrets/SUPPORTREADSCALEOUT`  | `SUPPORTREADSCALEOUT`  |
-| `#DISABLE_LOGVIEWER#`    | `/run/secrets/ENABLE_LOGVIEWER`     | `ENABLE_LOGVIEWER`     |
-| `#DISABLE_RESTAPI#`      | `/run/secrets/ENABLE_RESTAPI`       | `ENABLE_RESTAPI`       |
-| `#DISABLE_APPSERVERAPI#` | `/run/secrets/ENABLE_APPSERVERAPI`  | `ENABLE_APPSERVERAPI`  |
-| `#DISABLE_METADATA#`     | `/run/secrets/ENABLE_METADATA`      | `ENABLE_METADATA`      |
-| `#DISABLE_SYNC#`         | `/run/secrets/ENABLE_SYNC`          | `ENABLE_SYNC`          |
+| Replacement pattern      | Secret value                        | Environment variable    |
+|--------------------------|-------------------------------------|-------------------------|
+| `%DB_PROVIDER%`          | `/run/secrets/DBSYSTEM`             | `DBSYSTEM`              |
+| `%DB_CONNECTION%`        | `/run/secrets/CONNSTRING`           | `CONNSTRING`            |
+| `%HDB_NAME_1%`           | `/run/secrets/HDBNAME1`             | `HDBNAME1`              |
+| `%HDB_CONNECTION_1%`     | `/run/secrets/HDBCONN1`             | `HDBCONN1`              |
+| `%HDB_NAME_2%`           | `/run/secrets/HDBNAME2`             | `HDBNAME2`              |
+| `%HDB_CONNECTION_2%`     | `/run/secrets/HDBCONN2`             | `HDBCONN2`              |
+| `%HDB_NAME_3%`           | `/run/secrets/HDBNAME3`             | `HDBNAME3`              |
+| `%HDB_CONNECTION_3%`     | `/run/secrets/HDBCONN3`             | `HDBCONN3`              |
+| `#BASEURL#`              | `/run/secrets/\BASEURL`             | `BASEURL`               |
+| `#APPINSIGHTS_KEY#`      | `/run/secrets/APPINSIGHTS_KEY`      | `APPINSIGHTS_KEY`       |
+| `#APPINSIGHTS_LOGLEVEL#` | `/run/secrets/APPINSIGHTS_LOGLEVEL` | `APPINSIGHTS_LOGLEVEL`  |
+| `#LOG_TENANT#`           | `/run/secrets/LOG_TENANT`           | `LOG_TENANT`            |
+| `#CONSOLE_LOGLEVEL#`     | `/run/secrets/CONSOLE_LOGLEVEL`     | `CONSOLE_LOGLEVEL`      |
+| `#FILE_LOGLEVEL#`        | `/run/secrets/FILE_LOGLEVEL`        | `FILE_LOGLEVEL`         |
+| `#SUPPORTREADSCALEOUT#`  | `/run/secrets/SUPPORTREADSCALEOUT`  | `SUPPORTREADSCALEOUT`   |
 
 The secret value takes precedence over the environment variable.
 
@@ -278,31 +269,6 @@ Log level to use for logging to log file. Default: `Info`
 
 This value can also be provided as file in the secrets folder.
 
-#### `ENABLE_LOGVIEWER`
-
-Enable the log viewer in the status frontend. Valid values: `true` and `false`.
-Default: `true`.
-
-#### `ENABLE_RESTAPI`
-
-Enable the REST API. Valid values: `true` and `false`.
-Default: `true`.
-
-#### `ENABLE_APPSERVERAPI`
-
-Enable the AppServer API that allows API access for Identity Manager frontend
-and tools. Valid values: `true` and `false`. Default: `true`.
-
-#### `ENABLE_METADATA`
-
-Enable the meta data API needed for synchronizations against the AppServer.
-Valid values: `true` and `false`. Default: `false`.
-
-#### `ENABLE_SYNC`
-
-Enable the synchronization API needed for synchronizations against the AppServer.
-Valid values: `true` and `false`. Default: `false`.
-
 #### `DEBUG`
 
 Set this to `true` to get verbose output from the startup script.
@@ -318,7 +284,7 @@ The volume mount points differ between the Windows and Linux based images. Pleas
 
 The directory `secrets` should contain the `SessionCertificate.pfx` file to allow sessions to be passed from one server to another.
 
-It can contain files with the name of the setting and its value as content.
+It can contain files with the name of the setting and its value as content. 
 
 This mount point should be mounted read-only.
 
@@ -327,7 +293,7 @@ This mount point should be mounted read-only.
 * **Windows:** `C:/ca-certificates`
 * **Linux:** `/run/ca-certificates`
 
-Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container local machine trusted root certificate store during startup of the container. Alternatively, an archive called `ca-certificates.zip` can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store. This may be required when the application is performing HTTPS calls to a server that is using a certificate signed by a private PKI. The lookup path may be controlled by changing the CA_CERTIFICATE environment variable.
+Place custom certificates that should be trusted here. Any certificate with a .crt file extension will be imported to the container (or mono) local machine trusted root certificate store during startup of the container. Alternatively, an archive called `ca-certificates.zip` can also be placed in this directory. This archive will be extracted during startup and all containing .crt files are imported to the store. This may be required when the application is performing HTTPS calls to a server that is using a certificate signed by a private PKI. The lookup path may be controlled by changing the CA_CERTIFICATE environment variable.
 
 This mount point should be mounted read-only.
 
@@ -359,7 +325,7 @@ Linux based application servers log directly to standard output. These logs can 
 
 ### Ports
 
-The Application Server is exposing port **8080**.
+The application server is exposing port **80**.
 
 ## Samples
 
@@ -374,7 +340,7 @@ docker run -d `
     -v $P/data/cache:C:/Cache `
     -v $P/data/search:C:/Search `
     -v $P/data/logs:C:/Logs `
-    -p 8080:8080 `
+    -p 80:80 `
     oneidentity/oneim-appserver:latest
 ```
 
@@ -392,7 +358,7 @@ Run the container in the background and get parameters from entries in the secre
 
 ```sh
 docker run -d \
-    -p 8080:8080 \
+    -p 80:80 \
     -v $PWD/secrets:/run/secrets:ro \
     -v $PWD/search:/var/search \
      oneidentity/oneim-appserver:latest

@@ -4,21 +4,21 @@ This image contains a simple installer to be used in derived images to create th
 
 ## Requirements
 
-All images tagged with `windows-amd64` are compatible with Windows Server hosts. Please check the supported Windows Server version for each tag using the list below. 
+All images tagged with `windows-amd64` are compatible with Windows Server hosts. Please check the supported Windows Server version for each tag using the list below. The images for are based on `mcr.microsoft.com/dotnet/framework/runtime:4.8`. 
 
-All images tagged with `linux-amd64` are compatible with Linux OS hosts.
+All images tagged with `linux-amd64` are compatible with Linux OS hosts. The images are based on `mono:6.12` and contain the [Mono Project](http://www.mono-project.com/) runtime, so it can be used as base-image for other containers.
 
 ### Supported Windows Server 2022 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `9.3`, `linux-amd64-9.3`
+* `9.2`, `linux-amd64-9.2`
 
 ## How to use this image
 
@@ -29,7 +29,7 @@ This image is not intended to be used directly but contains everything necessary
 The tool `create-web-dir` allows you to assemble One Identity Manager installation folders from a directory containing a One Identity Manager distribution or directly from an installed One Identity Manager database.
 
 * **Windows:** `C:/installer/create-web-dir.exe`
-* **Linux:** `dotnet /installer/create-web-dir.dll`
+* **Linux:** `mono /installer/create-web-dir.exe`
 
 #### Parameters
 
@@ -39,7 +39,7 @@ The tool `create-web-dir` allows you to assemble One Identity Manager installati
 | --mode=VALUE | Mode, allowed: web, standalone, default: web |
 | --dest, -d=VALUE | Destination directory |
 | --setup, -s=VALUE | Setup directory containing the modules. Provide either this value or a database connection. |
-| --db-system=VALUE | Database system to connect as source. Valid values are MSSQL, ORACLE, or APPSERVER. Default: MSSQL |
+| --db-system=VALUE | Database system to connect as source. Valid values are MSSQL or APPSERVER. Default: MSSQL |
 | --db-connect=VALUE | Database connection string for the system to use as source. |
 | --auth=VALUE | Authentication used during installation. Required for some options when running against application servers. |
 | --modules, -m=VALUE | Comma separated list of modules to install. May be omitted when installing from an existing database. |
@@ -55,7 +55,10 @@ The tool `create-web-dir` allows you to assemble One Identity Manager installati
 | --targets-from-server | Get targets attached to the server in the database. Parameter --server-name becomes mandatory when setting this parameter. |
 | --server-name=VALUE | Server name as set in the QBMServer table of the database. |
 | --web-app=VALUE | Create a web application in the database for the supplied URL |
+| --web-app-project=VALUE | Identifier or UID of the AEDS web project to use in the web application. |
 | --web-app-product=VALUE | Identifier or UID of the dialog product to use in the web application. |
+| --web-app-auth=VALUE | Identifier or UID of the primary authentication module to use in the web application. |
+| --web-app-auth2=VALUE | Identifier or UID of the secondary authentication module to use in the web application. |
 | --nologo | Do not show the start banner and copyright info. |
 
 ## Examples
@@ -81,7 +84,7 @@ ENV DBSYSTEM MSSQL
 ENV TARGETS "Server\Jobserver"
 
 # Assemble the One Identity Manager installation
-RUN dotnet /installer/create-web-dir.dll \
+RUN mono /installer/create-web-dir.exe \
     --mode=standalone \
     --dest=${SRV_HOME} \
     --db-system=$DBSYSTEM \
@@ -96,7 +99,51 @@ EXPOSE 1880
 EXPOSE 2880
 
 WORKDIR ${SRV_HOME}
-CMD ["dotnet", "JobServiceCmd.dll"]
+CMD ["mono", "JobServiceCmd.exe"]
+```
+
+### Custom Dockerfile to create a simple Application Server installation (Windows)
+
+The following Dockerfile demonstrates the usage of the `oneidentity/oneim-installer` image to create your own custom One Identity Manager Applicatin Server container for Windows.
+
+```Dockerfile
+# escape=`
+
+FROM oneidentity/oneim-installer:latest as installer
+FROM mcr.microsoft.com/dotnet/framework/aspnet:4.8
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# Database system, supported values: MSSQL
+ENV DBSYSTEM MSSQL
+
+# Connection string to the database. Will be used at install.
+#
+# MS SQL connection string
+# ENV CONNSTRING "Data Source=<server>;Initial Catalog=<database>;User ID=<user>;Password=<password>"
+
+# Deployment targets to install
+# You can remove the Search targets if no fulltext index should be installed in this container
+ENV TARGETS "Server\Web\AppServer,Server\Web\AppServer\SearchCrawler,Server\Web\AppServer\SearchIndex"
+
+# Set SRV_HOME
+ENV SRV_HOME C:/inetpub/wwwroot
+
+# Copy the installer over from the installer image, as we need another base
+COPY --from=installer ["/installer", "/installer"]
+
+# Copy a valid Application Server web.config to the container
+COPY Web.config /config/Web.config
+
+# Assemble the One Identity Manager installation
+/installer/create-web-dir.exe `
+    --dest=${env:SRV_HOME} `
+    --db-system=${env:DBSYSTEM} `
+    --db-connect="${env:CONNSTRING}" `
+    --targets="${env:TARGETS}" `
+    --web-config=\config\Web.config
+
+EXPOSE 80
+ENTRYPOINT ["C:\\ServiceMonitor.exe", "w3svc"]
 ```
 
 ## Further Reading

@@ -10,15 +10,15 @@ All images tagged with `linux-amd64` are compatible with Linux OS hosts.
 
 ### Supported Windows Server 2022 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2022`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2022`
 
 ### Supported Windows Server 2019 amd64 tags
 
-* `9.3`, `windows-amd64-9.3-windowsservercore-ltsc2019`
+* `9.2`, `windows-amd64-9.2-windowsservercore-ltsc2019`
 
 ### Supported Linux tags
 
-* `9.3`, `linux-amd64-9.3`
+* `9.2`, `linux-amd64-9.2`
 
 ## How to use this image
 
